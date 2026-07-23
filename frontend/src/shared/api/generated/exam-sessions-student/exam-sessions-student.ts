@@ -429,7 +429,10 @@ export const explainQuestion = (
   );
 };
 
-export const getExplainQuestionMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const getExplainQuestionMutationOptions = <
+  TError = ErrorType<HTTPValidationError>,
+  TContext = unknown,
+>(options?: {
   mutation?: UseMutationOptions<Awaited<ReturnType<typeof explainQuestion>>, TError, { questionId: number }, TContext>;
   request?: SecondParameter<typeof createInstance>;
 }): UseMutationOptions<Awaited<ReturnType<typeof explainQuestion>>, TError, { questionId: number }, TContext> => {
@@ -451,12 +454,12 @@ export const getExplainQuestionMutationOptions = <TError = ErrorType<unknown>, T
 
 export type ExplainQuestionMutationResult = NonNullable<Awaited<ReturnType<typeof explainQuestion>>>;
 
-export type ExplainQuestionMutationError = ErrorType<unknown>;
+export type ExplainQuestionMutationError = ErrorType<HTTPValidationError>;
 
 /**
  * @summary Explain a question with AI
  */
-export const useExplainQuestion = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useExplainQuestion = <TError = ErrorType<HTTPValidationError>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof explainQuestion>>,
