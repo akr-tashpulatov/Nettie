@@ -37,7 +37,7 @@ export function AuthCard({
         <div className="flex justify-center">
           <Image
             src="/logo-light.svg"
-            alt="Pixels"
+            alt="Nettie"
             width={113}
             height={44}
             priority

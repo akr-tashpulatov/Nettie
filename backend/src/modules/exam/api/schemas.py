@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 
 from pydantic import BaseModel
@@ -67,14 +68,18 @@ class SessionResponse(BaseModel):
         items = []
         for item in session.items:
             view = detail.questions.get(item.question_id)
-            options = (
-                [
+            options = []
+            if view:
+                # Shuffle so the correct option isn't always first, seeded per
+                # (session, question) so the order stays stable across reloads.
+                ordered = list(view.options)
+                random.Random(f"{session.require_id}:{item.question_id}").shuffle(
+                    ordered
+                )
+                options = [
                     SessionOptionView(id=o.id, text=o.text, position=o.position)
-                    for o in view.options
+                    for o in ordered
                 ]
-                if view
-                else []
-            )
             items.append(
                 SessionItemView(
                     position=item.position,

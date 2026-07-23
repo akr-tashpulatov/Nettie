@@ -4040,6 +4040,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/katex@npm:^0.16.8":
+  version: 0.16.8
+  resolution: "@types/katex@npm:0.16.8"
+  checksum: 10c0/0661609353f4f5e62bd2dc78da99e842761c6474b19f2268b195bbe9dbf20e6f766a31155d79eec2e7c3eff4e7eba4b30f4f519e9c6a11c75bb45e257a2ddb69
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^20":
   version: 20.19.39
   resolution: "@types/node@npm:20.19.39"
@@ -4996,6 +5003,13 @@ __metadata:
   version: 15.0.0
   resolution: "commander@npm:15.0.0"
   checksum: 10c0/539229c171914ea1ccd45ee5f10d924289a12a684ea3a7a44147abe54003c35ed6de9ae4ad198d88c29fdf403dca0428451a388234e6dc01b6faa978fb207206
+  languageName: node
+  linkType: hard
+
+"commander@npm:^8.3.0":
+  version: 8.3.0
+  resolution: "commander@npm:8.3.0"
+  checksum: 10c0/8b043bb8322ea1c39664a1598a95e0495bfe4ca2fad0d84a92d7d1d8d213e2a155b441d2470c8e08de7c4a28cf2bc6e169211c49e1b21d9f7edc6ae4d9356060
   languageName: node
   linkType: hard
 
@@ -6365,6 +6379,7 @@ __metadata:
     "@tanstack/eslint-plugin-query": "npm:^5.91.4"
     "@tanstack/react-query": "npm:^5.101.0"
     "@tanstack/react-table": "npm:^8.21.3"
+    "@types/katex": "npm:^0.16.8"
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
@@ -6376,6 +6391,7 @@ __metadata:
     eslint-config-next: "npm:16.1.6"
     eslint-config-prettier: "npm:^10.1.8"
     husky: "npm:^9.1.7"
+    katex: "npm:^0.18.1"
     lucide-react: "npm:^0.563.0"
     next: "npm:^16.2.10"
     next-intl: "npm:^4.8.2"
@@ -7418,6 +7434,17 @@ __metadata:
     object.assign: "npm:^4.1.4"
     object.values: "npm:^1.1.6"
   checksum: 10c0/a32679e9cb55469cb6d8bbc863f7d631b2c98b7fc7bf172629261751a6e7bc8da6ae374ddb74d5fbd8b06cf0eb4572287b259813d92b36e384024ed35e4c13e1
+  languageName: node
+  linkType: hard
+
+"katex@npm:^0.18.1":
+  version: 0.18.1
+  resolution: "katex@npm:0.18.1"
+  dependencies:
+    commander: "npm:^8.3.0"
+  bin:
+    katex: cli.js
+  checksum: 10c0/287994eef74096044127f0adde40b284c5dd914e7642212d957da5b62ed8312ace8c87701ddf0cf06ce484aa6ba72f4344376fa3f2d785e5ee65bfa1141f7fc2
   languageName: node
   linkType: hard
 

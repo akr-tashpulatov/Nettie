@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import type { QuestionResponse } from "@/shared/api/generated/model";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/shared/components/ui/button";
+import { MathText } from "@/shared/components/math-text";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { cn } from "@/shared/lib/utils";
@@ -87,7 +88,7 @@ export function AdminTestDetailPage({ testId }: { testId: number }) {
               <div className="flex items-start justify-between gap-4">
                 <p className="font-medium">
                   <span className="text-muted-foreground">{index + 1}.</span>{" "}
-                  {q.text}
+                  <MathText>{q.text}</MathText>
                 </p>
                 <div className="flex shrink-0 gap-1">
                   <Button variant="ghost" size="icon-sm" onClick={() => openEdit(q)}>
@@ -114,7 +115,7 @@ export function AdminTestDetailPage({ testId }: { testId: number }) {
                     ) : (
                       <span className="size-4" />
                     )}
-                    {o.text}
+                    <MathText>{o.text}</MathText>
                   </li>
                 ))}
               </ul>

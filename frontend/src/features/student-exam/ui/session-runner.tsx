@@ -6,6 +6,7 @@ import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { SessionResponse, SessionOptionView } from "@/shared/api/generated/model";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/shared/components/ui/button";
+import { MathText } from "@/shared/components/math-text";
 import { cn } from "@/shared/lib/utils";
 import { useTakeSession, type QuestionResult } from "../model/use-take-session";
 
@@ -84,7 +85,9 @@ export function SessionRunner({ session }: { session: SessionResponse }) {
 
       {/* Question card */}
       <div className="rounded-lg border bg-background p-6">
-        <p className="text-lg font-medium">{currentItem.text}</p>
+        <p className="text-lg font-medium">
+          <MathText>{currentItem.text}</MathText>
+        </p>
 
         <div className="mt-5 flex flex-col gap-2.5">
           {currentItem.options.map((option) => {
@@ -102,7 +105,7 @@ export function SessionRunner({ session }: { session: SessionResponse }) {
                   locked ? "cursor-default" : "cursor-pointer",
                 )}
               >
-                <span>{option.text}</span>
+                <MathText>{option.text}</MathText>
                 {state === "correct" ? (
                   <Check className="size-4 shrink-0 text-emerald-600" />
                 ) : state === "wrong" ? (
