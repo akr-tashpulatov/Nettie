@@ -7,6 +7,7 @@ from .exception import (
     DomainException,
     NotFoundError,
     RateLimitError,
+    ServiceUnavailableError,
     ValidationError,
 )
 
@@ -19,6 +20,7 @@ __all__ = [
     "NotFoundError",
     "ConflictError",
     "RateLimitError",
+    "ServiceUnavailableError",
     "Entity",
     "TimestampedEntity",
     "EntityNotPersistedError",

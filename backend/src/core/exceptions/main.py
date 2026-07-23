@@ -9,6 +9,7 @@ from src.core.domain import (
     DomainException,
     NotFoundError,
     RateLimitError,
+    ServiceUnavailableError,
     ValidationError,
 )
 from src.core.logger import logging
@@ -24,6 +25,7 @@ DOMAIN_STATUS: dict[type[DomainException], int] = {
     NotFoundError: status.HTTP_404_NOT_FOUND,
     ConflictError: status.HTTP_409_CONFLICT,
     RateLimitError: status.HTTP_429_TOO_MANY_REQUESTS,
+    ServiceUnavailableError: status.HTTP_503_SERVICE_UNAVAILABLE,
 }
 
 

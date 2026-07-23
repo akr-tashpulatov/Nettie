@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react";
 
 import type { SessionResponse, SessionOptionView } from "@/shared/api/generated/model";
 import { ROUTES } from "@/shared/constants/routes";
@@ -9,6 +9,7 @@ import { Button } from "@/shared/components/ui/button";
 import { MathText } from "@/shared/components/math-text";
 import { cn } from "@/shared/lib/utils";
 import { useTakeSession, type QuestionResult } from "../model/use-take-session";
+import { useQuestionExplanation } from "../model/use-question-explanation";
 
 type OptionState = "correct" | "wrong" | "selected" | "idle";
 
@@ -36,6 +37,7 @@ const optionClasses: Record<OptionState, string> = {
 
 export function SessionRunner({ session }: { session: SessionResponse }) {
   const s = useTakeSession(session);
+  const explanation = useQuestionExplanation();
   const { currentItem, currentResult } = s;
 
   if (!currentItem) {
@@ -127,6 +129,32 @@ export function SessionRunner({ session }: { session: SessionResponse }) {
               ? "Correct!"
               : "Incorrect — the correct answer is highlighted above."}
           </p>
+        ) : null}
+
+        {currentResult ? (
+          <div className="mt-4">
+            {explanation.explanationFor(currentItem.question_id) ? (
+              <div className="rounded-lg border bg-muted/40 p-4">
+                <p className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-primary">
+                  <Sparkles className="size-4" /> AI explanation
+                </p>
+                <div className="text-sm leading-relaxed text-foreground">
+                  <MathText>
+                    {explanation.explanationFor(currentItem.question_id)!}
+                  </MathText>
+                </div>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => explanation.explain(currentItem.question_id)}
+                isLoading={explanation.isExplaining(currentItem.question_id)}
+              >
+                <Sparkles className="size-4" /> Explain with AI
+              </Button>
+            )}
+          </div>
         ) : null}
       </div>
 

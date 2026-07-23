@@ -36,3 +36,7 @@ class ConflictError(DomainException):
 
 class RateLimitError(DomainException):
     """Too many requests; the caller must slow down or retry later."""
+
+
+class ServiceUnavailableError(DomainException):
+    """An upstream dependency is unavailable; the caller should retry later."""

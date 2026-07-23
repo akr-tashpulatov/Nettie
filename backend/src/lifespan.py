@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from src.core.broker import broker
 from src.core.database import check_db_connection, close_db_connection
 from src.core.health import mark_app_ready
+from src.core.openai import openai_client
 from src.core.storage import storage_service
 
 
@@ -27,4 +28,5 @@ async def lifespan(app: FastAPI):
     if not broker.is_worker_process:
         await broker.shutdown()
     await storage_service.close()
+    await openai_client.close()
     await close_db_connection()

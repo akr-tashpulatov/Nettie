@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Protocol
 
+from ..domain.explanation import ExplainableQuestion
+
 
 @dataclass(frozen=True)
 class AnswerKey:
@@ -43,4 +45,10 @@ class IQuestionCatalog(Protocol):
         self, question_ids: list[int]
     ) -> dict[int, QuestionView]:
         """Question text and options (no `is_correct`) keyed by question id."""
+        ...
+
+    async def get_explainable(self, question_id: int) -> ExplainableQuestion | None:
+        """Question, its options, and the correct answer text — for the AI
+        explanation. Unlike `get_question_views`, this intentionally exposes the
+        correct answer, so it must never be sent to the student verbatim."""
         ...

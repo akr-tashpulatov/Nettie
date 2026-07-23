@@ -2,6 +2,7 @@ from src.core.domain import (
     AuthorizationError,
     ConflictError,
     NotFoundError,
+    ServiceUnavailableError,
     ValidationError,
 )
 
@@ -36,3 +37,11 @@ class SessionCompletedError(ConflictError):
 
 class SessionForbiddenError(AuthorizationError):
     """This session belongs to another student."""
+
+
+class QuestionNotFoundError(NotFoundError):
+    """Question not found."""
+
+
+class ExplanationUnavailableError(ServiceUnavailableError):
+    """The AI explanation could not be generated. Please try again later."""

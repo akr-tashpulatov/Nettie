@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from src.core.dtos.pagination import PaginatedResponse
 from src.models.enums import SessionStatus
 
+from ..application.explanation_service import ExplanationResult
 from ..application.session_service import SessionDetail
 from ..domain.entities import AnswerFeedback, TestSession
 
@@ -32,6 +33,20 @@ class AnswerFeedbackResponse(BaseModel):
             answered_count=feedback.answered_count,
             total=feedback.total,
             completed=feedback.completed,
+        )
+
+
+class ExplanationResponse(BaseModel):
+    question_id: int
+    explanation: str
+    cached: bool
+
+    @classmethod
+    def from_result(cls, result: ExplanationResult) -> "ExplanationResponse":
+        return cls(
+            question_id=result.question_id,
+            explanation=result.text,
+            cached=result.cached,
         )
 
 

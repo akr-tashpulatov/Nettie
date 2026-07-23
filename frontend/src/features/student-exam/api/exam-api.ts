@@ -8,6 +8,7 @@ import {
   useListSessions,
   useGetSessionDetail,
   useAnswerQuestion,
+  useExplainQuestion,
   getListSessionsQueryKey,
   getGetSessionDetailQueryKey,
 } from "@/shared/api/generated/exam-sessions-student/exam-sessions-student";
@@ -40,5 +41,7 @@ export const useStartSessionMutation = () => {
 };
 
 export const useAnswerQuestionMutation = () => useAnswerQuestion();
+
+export const useExplainQuestionMutation = () => useExplainQuestion();
 
 export { getGetSessionDetailQueryKey };

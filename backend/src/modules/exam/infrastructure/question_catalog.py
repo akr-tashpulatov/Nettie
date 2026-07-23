@@ -5,6 +5,7 @@ from src.core.database.interfaces.repositories import SQLAlchemyAbstractReposito
 from src.models import OptionModel, QuestionModel, TestModel
 
 from ..application.catalog import AnswerKey, OptionView, QuestionView
+from ..domain.explanation import ExplainableQuestion
 
 
 class SqlQuestionCatalog(SQLAlchemyAbstractRepository):
@@ -47,6 +48,26 @@ class SqlQuestionCatalog(SQLAlchemyAbstractRepository):
         if correct_id is None:
             return None
         return AnswerKey(correct_option_id=correct_id, valid_option_ids=valid_ids)
+
+    async def get_explainable(self, question_id: int) -> ExplainableQuestion | None:
+        stmt = (
+            select(QuestionModel)
+            .where(QuestionModel.id == question_id)
+            .options(selectinload(QuestionModel.options))
+        )
+        question = await self.session.scalar(stmt)
+        if question is None:
+            return None
+        options = sorted(question.options, key=lambda o: o.position)
+        correct = next((o.text for o in options if o.is_correct), None)
+        if correct is None:
+            return None
+        return ExplainableQuestion(
+            question_id=question.id,
+            text=question.text,
+            options=[o.text for o in options],
+            correct_answer=correct,
+        )
 
     async def get_question_views(
         self, question_ids: list[int]
