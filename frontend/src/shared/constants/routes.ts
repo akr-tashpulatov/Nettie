@@ -9,4 +9,13 @@ export const ROUTES = {
   VERIFY_EMAIL: "/verify-email",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+
+  // Admin
+  ADMIN_TESTS: "/admin/tests",
+  ADMIN_TEST: (id: number | string) => `/admin/tests/${id}`,
+
+  // Student
+  STUDENT_TESTS: "/student/tests",
+  STUDENT_SESSIONS: "/student/sessions",
+  STUDENT_SESSION: (id: number | string) => `/student/sessions/${id}`,
 }

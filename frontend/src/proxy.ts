@@ -1,22 +1,22 @@
 import { ROUTES } from "@/shared/constants/routes";
 import { AuthProxy } from "@/shared/proxy/auth.proxy";
+import { Role } from "@/shared/api/generated/model/role";
 import { NextRequest, NextResponse } from "next/server";
 
 const publicRoutes = ['/sign-in', '/']
-const protectedRoutes = [
-  '/home',
+
+// Prefix-matched protected areas with the role they require.
+const roleGuardedPrefixes: { prefix: string; roles?: Role[] }[] = [
+  { prefix: '/home' },
+  { prefix: '/admin', roles: [Role.ADMIN] },
+  { prefix: '/student', roles: [Role.STUDENT] },
 ]
 
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isPublicRoute = publicRoutes.includes(path)
-  const isProtectedRoute = protectedRoutes.some(route => {
-    const regexPattern = '^' + route.replace(/\[.*?\]/g, '[^/]+') + '$';
-    return new RegExp(regexPattern).test(path);
-  });
 
-
-  if(path.includes('/sign-in')) {
+  if (path.includes('/sign-in')) {
     const authProxy = new AuthProxy(request);
     const authResponse = await authProxy.validate();
 
@@ -29,15 +29,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (isProtectedRoute) {
+  const guard = roleGuardedPrefixes.find(
+    (g) => path === g.prefix || path.startsWith(`${g.prefix}/`),
+  );
+
+  if (guard) {
     const authProxy = new AuthProxy(request);
-    const authResponse = await authProxy.validate();
+    const authResponse = await authProxy.validate(guard.roles);
 
     if (authResponse.status !== 200) {
       return authResponse;
     }
   }
-  
+
   return NextResponse.next();
 }
 
