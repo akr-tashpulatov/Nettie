@@ -64,6 +64,14 @@ class Settings(BaseSettings):
     REDIS_PORT: int
     REDIS_PASSWORD: str
 
+    # AI explanation (student-facing "Explain this" feature)
+    OPENAI_API_KEY: Optional[str] = None
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    OPENAI_TIMEOUT_SECONDS: float = 30.0
+    # Generated explanations are cached in Redis for a week — the concept behind
+    # a question is stable, so re-asking the model on every click is wasteful.
+    EXPLANATION_CACHE_TTL_SECONDS: int = 60 * 60 * 24 * 7
+
     # Rate limits
     RATE_LIMIT_DATABASE: int = 1
     RATE_LIMIT_HEADERS_ENABLED: bool = True
