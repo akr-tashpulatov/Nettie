@@ -33,7 +33,7 @@ apiInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry && !originalRequest.url?.includes('/auth/sign-in')) {
+    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url?.includes('/auth/sign-in')) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({resolve, reject});
@@ -46,9 +46,9 @@ apiInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const { data } = await apiInstance.post('/auth/refresh-token');
-        processQueue(null, data.accessToken);
-        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
+        const { data } = await apiInstance.post('/auth/refresh');
+        processQueue(null, data.access_token);
+        originalRequest.headers['Authorization'] = `Bearer ${data.access_token}`;
         return apiInstance(originalRequest);
       } catch (err) {
         console.log("Refresh token error: ", err);

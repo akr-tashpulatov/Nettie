@@ -170,16 +170,24 @@ async def sign_up_verify(
     response_model=RefreshResponse,
     summary="Refresh access and refresh tokens",
     description="Exchanges a valid refresh token for a new access/refresh token "
-    "pair, rotating the refresh token cookie.",
+    "pair, rotating the refresh token cookie. The token is read from the "
+    "HttpOnly refresh cookie, falling back to the request body for non-browser "
+    "clients.",
     responses=error_responses(InvalidRefreshTokenError, InactiveUserError),
 )
 async def refresh(
-    payload: RefreshRequest,
+    request: Request,
     response: Response,
     service: Annotated[AuthService, Depends(get_auth_service)],
     cookies: Annotated[CookieService, Depends(get_cookie_service)],
+    payload: RefreshRequest | None = None,
 ) -> RefreshResponse:
-    tokens = await service.refresh(payload.refresh_token)
+    refresh_token = cookies.get_cookie(request, REFRESH_TOKEN_COOKIE)
+    if not refresh_token and payload is not None:
+        refresh_token = payload.refresh_token
+    if not refresh_token:
+        raise InvalidRefreshTokenError()
+    tokens = await service.refresh(refresh_token)
     set_auth_cookies(cookies, response, tokens)
     return RefreshResponse(
         access_token=tokens.access_token, refresh_token=tokens.refresh_token
