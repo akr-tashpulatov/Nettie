@@ -1,14 +1,7 @@
-from typing import TYPE_CHECKING
-
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.core.database import Base, IdMixin, TimestampMixin
 from src.models.enums import Role
-
-if TYPE_CHECKING:
-    from src.models.subscription import SubscriptionModel
-    from src.models.transaction import TransactionModel
 
 
 class UserModel(Base, IdMixin, TimestampMixin):
@@ -21,11 +14,3 @@ class UserModel(Base, IdMixin, TimestampMixin):
     password_hash: Mapped[str] = mapped_column()
     email_verified: Mapped[bool] = mapped_column(default=False)
     is_active: Mapped[bool] = mapped_column(default=True)
-    study_group_id: Mapped[int | None] = mapped_column(
-        ForeignKey("study_groups.id"), nullable=True, index=True
-    )
-
-    subscriptions: Mapped[list["SubscriptionModel"]] = relationship(
-        back_populates="user"
-    )
-    transactions: Mapped[list["TransactionModel"]] = relationship(back_populates="user")

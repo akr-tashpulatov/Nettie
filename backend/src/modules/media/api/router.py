@@ -24,8 +24,8 @@ router = APIRouter(prefix="/media", tags=["Media"])
     status_code=status.HTTP_201_CREATED,
     summary="Upload an image",
     description="Stores an image in private object storage and returns its media "
-    "id along with a short-lived presigned URL. Pass the id as `image_id` when "
-    "creating or updating a writing task. Accepts PNG, JPEG and WebP up to 16 MB.",
+    "id along with a short-lived presigned URL. Accepts PNG, JPEG and WebP up to "
+    "16 MB.",
     responses=error_responses(
         InvalidMediaTypeError, MediaTooLargeError, EmptyMediaError
     ),
@@ -45,8 +45,8 @@ async def upload_image(
     status_code=status.HTTP_201_CREATED,
     summary="Upload an audio recording",
     description="Stores an audio recording in private object storage and returns "
-    "its media id along with a short-lived presigned URL. Pass the id when "
-    "submitting a speaking answer. Accepts MP4, WebM and Ogg audio up to 32 MB.",
+    "its media id along with a short-lived presigned URL. Accepts MP4, WebM and "
+    "Ogg audio up to 32 MB.",
     responses=error_responses(
         InvalidMediaTypeError, MediaTooLargeError, EmptyMediaError
     ),

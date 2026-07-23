@@ -6,7 +6,7 @@ loadEnvConfig(process.cwd());
 const input = {
   target: process.env.OPENAPI_URL as string,
   override: { transformer: "./src/shared/api/orval/transformer.mjs" },
-  filters: { mode: "exclude" as const, tags: ["Health", "Metrics", "Webhook"] },
+  filters: { mode: "exclude" as const, tags: ["Health", "Metrics"] },
 };
 
 export default defineConfig({

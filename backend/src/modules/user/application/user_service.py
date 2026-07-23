@@ -1,6 +1,5 @@
 import math
 
-from src.core.audit import IAuditLogger, snapshot
 from src.core.dtos.pagination import PaginatedResponse
 from src.models.enums import Role
 
@@ -24,11 +23,9 @@ class UserService:
         self,
         repo: IUserRepository,
         hasher: PasswordHasher,
-        audit: IAuditLogger,
         sessions: ISessionRevoker,
     ):
         self.repo = repo
-        self.audit = audit
         self.hasher = hasher
         self.sessions = sessions
 
@@ -45,14 +42,7 @@ class UserService:
             phone_number=data.phone_number,
             password_hash=self.hasher.hash(data.password),
         )
-        created = await self.repo.add(user)
-        await self.audit.log(
-            action="user.create",
-            entity="user",
-            entity_id=str(created.id),
-            after=snapshot(created),
-        )
-        return created
+        return await self.repo.add(user)
 
     async def get_users(self, query: UsersQueryDto) -> PaginatedResponse[User]:
         users, total = await self.repo.get_many(query)
@@ -84,7 +74,6 @@ class UserService:
 
     async def update_by_id(self, user_id: int, data: UserUpdateDto) -> User:
         user = await self.get_by_id(user_id)
-        before = snapshot(user)
 
         if data.email is not None:
             if await self.repo.exists_by_email(data.email, exclude_id=user_id):
@@ -105,24 +94,13 @@ class UserService:
         if data.password is not None:
             user.set_password(self.hasher.hash(data.password))
 
-        updated = await self.repo.update(user)
-        await self.audit.log(
-            action="user.update",
-            entity="user",
-            entity_id=str(user_id),
-            before=before,
-            after=snapshot(updated),
-        )
-        return updated
+        return await self.repo.update(user)
 
     async def update_me(
         self, user_id: int, actor_role: Role, data: MeUpdateDto
     ) -> User:
         user = await self.get_by_id(user_id)
-        # The audit trail exists to record administrator actions, so a student
-        # editing their own profile is not snapshotted or logged.
         is_admin = actor_role is Role.ADMIN
-        before = snapshot(user) if is_admin else None
 
         if data.email is not None:
             if not is_admin:
@@ -157,40 +135,14 @@ class UserService:
         if data.new_password is not None:
             await self.sessions.revoke_all(user_id)  # force re-login everywhere
 
-        if is_admin:
-            await self.audit.log(
-                action="user.update_me",
-                entity="user",
-                entity_id=str(user_id),
-                before=before,
-                after=snapshot(updated),
-            )
         return updated
 
     async def activate(self, user_id: int) -> User:
         user = await self.get_by_id(user_id)
-        before = snapshot(user)
         user.activate()
-        updated = await self.repo.update(user)
-        await self.audit.log(
-            action="user.activate",
-            entity="user",
-            entity_id=str(user_id),
-            before=before,
-            after=snapshot(updated),
-        )
-        return updated
+        return await self.repo.update(user)
 
     async def deactivate(self, user_id: int) -> User:
         user = await self.get_by_id(user_id)
-        before = snapshot(user)
         user.deactivate()
-        updated = await self.repo.update(user)
-        await self.audit.log(
-            action="user.deactivate",
-            entity="user",
-            entity_id=str(user_id),
-            before=before,
-            after=snapshot(updated),
-        )
-        return updated
+        return await self.repo.update(user)

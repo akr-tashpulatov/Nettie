@@ -10,7 +10,6 @@ from src.core.config import settings
 from src.core.logger import logging
 from src.modules.mail.application.dtos import (
     PasswordResetMailDto,
-    SubscriptionSuccessMailDto,
     VerifyAccountMailDto,
 )
 
@@ -29,9 +28,6 @@ class MailService:
         self.password_reset_template = self.jinja2_env.get_template(
             "password_reset.html"
         )
-        self.subscription_success_template = self.jinja2_env.get_template(
-            "subscription_success.html"
-        )
 
     async def send_verify_account_mail(self, to: str, data: VerifyAccountMailDto):
         message = MIMEMultipart("alternative")
@@ -39,7 +35,9 @@ class MailService:
         message["To"] = to
         message["Subject"] = f"Verify {settings.APP_NAME} account"
 
-        verify_account_html = self.verify_account_template.render(**data.model_dump())
+        verify_account_html = self.verify_account_template.render(
+            app_name=settings.APP_NAME, **data.model_dump()
+        )
 
         html_msg = MIMEText(verify_account_html, "html")
 
@@ -53,27 +51,11 @@ class MailService:
         message["To"] = to
         message["Subject"] = f"Reset {settings.APP_NAME} account password"
 
-        password_reset_html = self.password_reset_template.render(**data.model_dump())
-
-        html_msg = MIMEText(password_reset_html, "html")
-
-        message.attach(html_msg)
-
-        await self.send_message(message)
-
-    async def send_subscription_success_mail(
-        self, to: str, data: SubscriptionSuccessMailDto
-    ):
-        message = MIMEMultipart("alternative")
-        message["From"] = f"{settings.MAIL_FROM_NAME} <{settings.MAIL_FROM}>"
-        message["To"] = to
-        message["Subject"] = f"Your {settings.APP_NAME} payment was successful"
-
-        subscription_success_html = self.subscription_success_template.render(
-            **data.model_dump()
+        password_reset_html = self.password_reset_template.render(
+            app_name=settings.APP_NAME, **data.model_dump()
         )
 
-        html_msg = MIMEText(subscription_success_html, "html")
+        html_msg = MIMEText(password_reset_html, "html")
 
         message.attach(html_msg)
 

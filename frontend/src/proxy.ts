@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const publicRoutes = ['/sign-in', '/']
 const protectedRoutes = [
-  '/users',
-  '/tariff',
-  '/audit-logs',
+  '/home',
 ]
 
 export async function proxy(request: NextRequest) {

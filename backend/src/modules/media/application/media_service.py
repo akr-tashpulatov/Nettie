@@ -2,7 +2,6 @@ import asyncio
 from datetime import timedelta
 from uuid import uuid4
 
-from src.core.audit import IAuditLogger, snapshot
 from src.core.config import settings
 
 from ..domain.entities import Media
@@ -48,11 +47,9 @@ class MediaService:
         self,
         repo: IMediaRepository,
         storage: IFileStorage,
-        audit: IAuditLogger,
     ):
         self.repo = repo
         self.storage = storage
-        self.audit = audit
 
     async def upload_image(self, data: MediaUploadDto) -> Media:
         return await self._upload(
@@ -98,14 +95,7 @@ class MediaService:
         await self.storage.upload(
             media.object_bucket, media.object_key, content, media.mimetype
         )
-        created = await self.repo.add(media)
-        await self.audit.log(
-            action="media.upload",
-            entity="media",
-            entity_id=str(created.id),
-            after=snapshot(created),
-        )
-        return created
+        return await self.repo.add(media)
 
     @staticmethod
     async def _read_within_limit(file: IUploadedFile, max_size: int) -> bytes:
@@ -121,18 +111,12 @@ class MediaService:
     async def delete(self, media_id: int) -> None:
         """Remove a media row and the object behind it.
 
-        No caller yet. A referencing column (e.g. `writing_tasks.image_id`) must be
-        cleared first, or the foreign key will block the delete.
+        No caller yet. Any referencing column (a foreign key to `media.id`) must
+        be cleared first, or the foreign key will block the delete.
         """
         media = await self.get_by_id(media_id)
         await self.repo.delete(media_id)
         await self.storage.delete(media.object_bucket, media.object_key)
-        await self.audit.log(
-            action="media.delete",
-            entity="media",
-            entity_id=str(media_id),
-            before=snapshot(media),
-        )
 
     async def get_by_id(self, media_id: int) -> Media:
         media = await self.repo.get_by_id(media_id)

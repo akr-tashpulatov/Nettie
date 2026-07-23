@@ -23,7 +23,6 @@ x-backend-env: &backend-env
   MAIL_STARTTLS: ${MAIL_STARTTLS}
   MAIL_SSL_TLS: ${MAIL_SSL_TLS}
   MAIL_FROM_NAME: ${MAIL_FROM_NAME}
-  GEMINI_API_KEY: ${GEMINI_API_KEY}
 
 x-redis-env: &redis-env
   REDIS_PASSWORD: ${REDIS_PASSWORD}

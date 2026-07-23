@@ -1,9 +1,7 @@
 from typing import Annotated
-from uuid import uuid4
 
 from fastapi import Depends, Request
 
-from src.core.audit import AuditActor, set_actor
 from src.core.cookie.cookie_service import CookieService
 from src.models.enums import Role
 
@@ -39,14 +37,6 @@ class AuthGuard:
         claims = tokens.verify_access(token)
         if self.roles and claims.role not in self.roles:
             raise InsufficientRoleError()
-        set_actor(
-            AuditActor(
-                user_id=claims.sub,
-                ip=request.client.host if request.client else None,
-                user_agent=request.headers.get("User-Agent"),
-                request_id=request.headers.get("X-Request-ID") or uuid4().hex,
-            )
-        )
         return claims
 
     @staticmethod

@@ -11,8 +11,8 @@ from src.models.enums import Role
 
 from ._runner import run
 
-ADMIN_PASSWORD = "Pixels_992_#"
-STUDENT_PASSWORD = "Pixels_911_#"
+ADMIN_PASSWORD = "Admin_992_#"
+STUDENT_PASSWORD = "Student_911_#"
 
 
 class SeedUser(TypedDict):
@@ -25,44 +25,16 @@ class SeedUser(TypedDict):
 
 USERS: list[SeedUser] = [
     {
-        "full_name": "Pixels Admin",
-        "email": "admin@pixels.kz",
+        "full_name": "Admin",
+        "email": "admin@example.com",
         "phone_number": "+77010000001",
         "role": Role.ADMIN,
         "password": ADMIN_PASSWORD,
     },
     {
-        "full_name": "Pixels Manager",
-        "email": "manager@pixels.kz",
+        "full_name": "Student",
+        "email": "student@example.com",
         "phone_number": "+77010000002",
-        "role": Role.ADMIN,
-        "password": ADMIN_PASSWORD,
-    },
-    {
-        "full_name": "Pixels Student",
-        "email": "student@pixels.kz",
-        "phone_number": "+77010000003",
-        "role": Role.STUDENT,
-        "password": STUDENT_PASSWORD,
-    },
-    {
-        "full_name": "Pixels Student VIP",
-        "email": "student_vip@pixels.kz",
-        "phone_number": "+77010000004",
-        "role": Role.STUDENT,
-        "password": STUDENT_PASSWORD,
-    },
-    {
-        "full_name": "Pixels Student PRO",
-        "email": "student_pro@pixels.kz",
-        "phone_number": "+77010000005",
-        "role": Role.STUDENT,
-        "password": STUDENT_PASSWORD,
-    },
-    {
-        "full_name": "Pixels Student Standard",
-        "email": "student_standard@pixels.kz",
-        "phone_number": "+77010000006",
         "role": Role.STUDENT,
         "password": STUDENT_PASSWORD,
     },

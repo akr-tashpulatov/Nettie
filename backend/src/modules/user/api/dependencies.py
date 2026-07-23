@@ -3,7 +3,6 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.audit import IAuditLogger, get_audit_logger
 from src.core.database import get_session
 from src.core.redis import RedisService, get_redis_service
 from src.modules.auth.infrastructure.jwt_token_service import JWTTokenService
@@ -35,7 +34,6 @@ def get_session_revoker(
 def get_user_service(
     repo: Annotated[IUserRepository, Depends(get_user_repository)],
     hasher: Annotated[PasswordHasher, Depends(get_password_hasher)],
-    audit: Annotated[IAuditLogger, Depends(get_audit_logger)],
     sessions: Annotated[ISessionRevoker, Depends(get_session_revoker)],
 ) -> UserService:
-    return UserService(repo, hasher, audit, sessions)
+    return UserService(repo, hasher, sessions)

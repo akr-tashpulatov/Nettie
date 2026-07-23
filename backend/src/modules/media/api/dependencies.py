@@ -3,7 +3,6 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.audit import IAuditLogger, get_audit_logger
 from src.core.database import get_session
 from src.core.storage import StorageService, get_storage_service
 
@@ -29,6 +28,5 @@ def get_file_storage(
 def get_media_service(
     repo: Annotated[IMediaRepository, Depends(get_media_repository)],
     storage: Annotated[IFileStorage, Depends(get_file_storage)],
-    audit: Annotated[IAuditLogger, Depends(get_audit_logger)],
 ) -> MediaService:
-    return MediaService(repo, storage, audit)
+    return MediaService(repo, storage)

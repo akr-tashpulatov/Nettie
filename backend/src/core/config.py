@@ -64,23 +64,10 @@ class Settings(BaseSettings):
     REDIS_PORT: int
     REDIS_PASSWORD: str
 
-    GEMINI_API_KEY: str
-    OPENAI_API_KEY: str
-
-    EPAY_CLIENT_ID: str
-    EPAY_TERMINAL_ID: str
-    EPAY_CLIENT_SECRET: str
-    EPAY_WEBHOOK_SECRET: str
-    EPAY_BASE_API_URL: HttpUrl
-    EPAY_MOCK: bool = False
-
     # Rate limits
     RATE_LIMIT_DATABASE: int = 1
     RATE_LIMIT_HEADERS_ENABLED: bool = True
     DEFAULT_RATE_LIMIT: list[str | Callable[..., str]] = ["100/minute"]
-
-    AZURE_SPEECH_KEY: str
-    AZURE_SPEECH_ENDPOINT: str
 
     @computed_field  # type: ignore[prop-decorator]
     @property
