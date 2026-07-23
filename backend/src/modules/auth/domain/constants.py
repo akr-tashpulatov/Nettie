@@ -14,9 +14,7 @@ DAILY_SEND_LIMIT = 10  # max emails per address per 24h
 SIGNUP_SESSION_TTL_SECONDS = 24 * 60 * 60  # bookkeeping kept for one day
 DAILY_COUNTER_TTL_SECONDS = 24 * 60 * 60
 
-# Cooldown (seconds) the client must wait before the Nth resend. Index 0 is the
-# wait after the very first send, index 1 after the second, and so on. Sends
-# beyond the schedule are capped by DAILY_SEND_LIMIT.
+# Cooldown (seconds) the client must wait before the Nth resend.
 RESEND_COOLDOWNS_SECONDS = [
     60,  # 1 min
     120,  # 2 min
