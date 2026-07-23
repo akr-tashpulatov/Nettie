@@ -1,0 +1,111 @@
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, status
+
+from src.core.exceptions import error_responses
+from src.modules.auth.api.guards import StudentUser
+
+from ..application.dtos import AnswerDto, SessionsQueryDto
+from ..application.session_service import SessionService
+from ..domain.exceptions import (
+    InvalidOptionError,
+    QuestionAlreadyAnsweredError,
+    QuestionNotInSessionError,
+    SessionCompletedError,
+    SessionForbiddenError,
+    SessionNotFoundError,
+    TestNotEligibleError,
+    TestNotFoundError,
+)
+from .dependencies import get_session_service
+from .schemas import (
+    AnswerFeedbackResponse,
+    AnswerRequest,
+    SessionResponse,
+    SessionsList,
+)
+
+router = APIRouter(prefix="/student", tags=["Exam Sessions (Student)"])
+
+
+@router.post(
+    "/tests/{test_id}/sessions",
+    response_model=SessionResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Start a test session",
+    description="Randomly draws `mode` questions from the test and starts a "
+    "session. Fails if the test has fewer than `mode` questions.",
+    responses=error_responses(TestNotFoundError, TestNotEligibleError),
+)
+async def start_session(
+    test_id: int,
+    service: Annotated[SessionService, Depends(get_session_service)],
+    student: StudentUser,
+) -> SessionResponse:
+    detail = await service.start(test_id, student.sub)
+    return SessionResponse.from_detail(detail)
+
+
+@router.get(
+    "/sessions",
+    response_model=SessionsList,
+    summary="List my sessions",
+    description="Returns the authenticated student's own test sessions.",
+)
+async def list_sessions(
+    query: Annotated[SessionsQueryDto, Depends()],
+    service: Annotated[SessionService, Depends(get_session_service)],
+    student: StudentUser,
+) -> SessionsList:
+    page = await service.list_my_sessions(student.sub, query)
+    return SessionsList.from_domain(page)
+
+
+@router.get(
+    "/sessions/{session_id}",
+    response_model=SessionResponse,
+    summary="Get a session",
+    description="Returns a session with its questions and options (correct "
+    "answers are not exposed) plus the student's progress so far.",
+    responses=error_responses(SessionNotFoundError, SessionForbiddenError),
+)
+async def get_session_detail(
+    session_id: int,
+    service: Annotated[SessionService, Depends(get_session_service)],
+    student: StudentUser,
+) -> SessionResponse:
+    detail = await service.get(session_id, student.sub)
+    return SessionResponse.from_detail(detail)
+
+
+@router.post(
+    "/sessions/{session_id}/answers",
+    response_model=AnswerFeedbackResponse,
+    summary="Answer a question",
+    description="Submits the selected option for a question and returns instant "
+    "feedback: whether it was correct and which option is the correct one. Each "
+    "question can be answered only once.",
+    responses=error_responses(
+        SessionNotFoundError,
+        SessionForbiddenError,
+        SessionCompletedError,
+        QuestionNotInSessionError,
+        QuestionAlreadyAnsweredError,
+        InvalidOptionError,
+    ),
+)
+async def answer_question(
+    session_id: int,
+    payload: AnswerRequest,
+    service: Annotated[SessionService, Depends(get_session_service)],
+    student: StudentUser,
+) -> AnswerFeedbackResponse:
+    feedback = await service.answer(
+        session_id,
+        student.sub,
+        AnswerDto(
+            question_id=payload.question_id,
+            selected_option_id=payload.selected_option_id,
+        ),
+    )
+    return AnswerFeedbackResponse.from_feedback(feedback)

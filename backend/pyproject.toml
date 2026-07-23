@@ -37,6 +37,8 @@ extend-select = ["TID251"]
 "src.modules.auth.infrastructure".msg = "application must not import infrastructure — depend on the port in application/ and wire the concrete class in api/dependencies.py"
 "src.modules.media.infrastructure".msg = "application must not import infrastructure — depend on the port in application/ and wire the concrete class in api/dependencies.py"
 "src.modules.user.infrastructure".msg = "application must not import infrastructure — depend on the port in application/ and wire the concrete class in api/dependencies.py"
+"src.modules.test.infrastructure".msg = "application must not import infrastructure — depend on the port in application/ and wire the concrete class in api/dependencies.py"
+"src.modules.exam.infrastructure".msg = "application must not import infrastructure — depend on the port in application/ and wire the concrete class in api/dependencies.py"
 
 [tool.ruff.lint.per-file-ignores]
 # Composition roots: the API's (api/dependencies.py) and the TaskIQ worker's
