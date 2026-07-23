@@ -1,0 +1,17 @@
+{
+  "files.exclude": {
+    ".venv": true,
+    "**/*.pyc": true,
+    "**/__pycache__": true,
+    ".mypy_cache": true,
+    ".ruff_cache": true,
+  },
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  }
+}

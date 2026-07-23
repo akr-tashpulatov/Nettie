@@ -1,0 +1,28 @@
+{
+  "sign-in": {
+    "phone-number": "Номер телефона",
+    "phone-number-placeholder": "Номер телефона",
+    "password": "Пароль",
+    "password-placeholder": "Пароль",
+    "sign-in": "Вход",
+    "success": "Вы успешно вошли",
+    "incorrectLoginOrPassword": "Неправильный логин или пароль",
+    "tooManyLoginAttempts": "Слишком много попыток. Попробуйте через 30 секунд",
+    "unexpectedError": "Непредвиденная ошибка. Повторите позже"
+  },
+  "pagination": {
+    "next": "Следующая",
+    "previous": "Предыдущая"
+  },
+  "errors": {
+    "invalidPhoneNumber": "Некорректный номер телефона",
+    "passwordRequired": "Пароль обязателен",
+    "tooManyAttempts": "Слишком много попыток. Попробуйте через 30 секунд",
+    "forbidden": "Действие запрещено",
+    "minLength2": "Минимум 2 символа",
+    "fieldRequired": "Поле обязательно для заполнения",
+    "passwordsDoNotMatch": "Пароли не совпадают",
+    "unexpectedError": "Непредвиденная ошибка. Повторите позже",
+    "tooManyLoginAttempts": "Слишком много попыток. Попробуйте через 30 секунд"
+  }
+}

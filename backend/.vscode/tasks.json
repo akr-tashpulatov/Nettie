@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run taskiq worker",
+      "type": "shell",
+      "command": "uv run taskiq worker src.core.broker:broker src.modules.mail.application.tasks src.modules.writing_session.application.tasks src.modules.speaking_session.application.tasks",
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Run uvicorn",
+      "type": "shell",
+      "command": "uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8000",
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
+}

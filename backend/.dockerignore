@@ -1,0 +1,26 @@
+# Python
+.venv
+**/__pycache__
+*.pyc
+
+# Docker
+Dockerfile
+dev.Dockerfile
+docker-compose.yaml
+
+# .env
+.env*
+
+# Git
+.git
+.gitignore
+
+# CI
+.github
+
+# IDE
+.vscode
+
+# Cache
+.mypy_cache
+.ruff_cache

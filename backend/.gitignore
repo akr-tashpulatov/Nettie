@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.mypy_cache
+.ruff_cache
+
+# Virtual environments
+.venv
+
+# MacOS
+.DS_Store
+
+# Environment variables
+.env*
+!.env.example
+
+# LLM writing band grading report
+scripts/pricing/report
+
+# Local audio fixtures for manual speech-assessment runs
+resources/

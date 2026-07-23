@@ -1,0 +1,29 @@
+{
+  "sign-in": {
+    "phone-number": "Телефон нөмірі",
+    "phone-number-placeholder": "Телефон нөмірін енгізіңіз",
+    "password": "Құпия сөз",
+    "password-placeholder": "Құпия сөз",
+    "sign-in": "Кіру",
+    "success": "Кіру сәтті орындалды",
+    "incorrectLoginOrPassword": "Қате логин немесе пароль",
+    "tooManyLoginAttempts": "Тым көп кіру әрекеттері жасалды. 30 секундтан кейін көріңіз",
+    "unexpectedError": "Күтпеген қате. Кейінірек қайталаңыз"
+  },
+  "errors": {
+    "invalidPhoneNumber": "Қате телефон нөмірі",
+    "passwordRequired": "Пароль міндетті",
+    "tooManyAttempts": "Тым көп әрекеттер жасалды. 30 секундтан кейін көріңіз",
+    "forbidden": "Арекет тиым салынған",
+    "minLength2": "Кем дегенде 2 символ",
+    "fieldRequired": "Өріс толтыру міндетті",
+    "nameAlreadyExists": "Осы атаулы қызмет бұрыннан бар",
+    "passwordsDoNotMatch": "Құпия сөздер сәйкес келмейді",
+    "unexpectedError": "Күтпеген қате. Кейінірек қайталаңыз",
+    "tooManyLoginAttempts": "Тым көп кіру әрекеттері жасалды. 30 секундтан кейін көріңіз"
+  },
+  "pagination": {
+    "next": "Келесі",
+    "previous": "Алдыңғы"
+  }
+}
