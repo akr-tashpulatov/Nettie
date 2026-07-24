@@ -3,9 +3,11 @@ import json
 from src.core.config import settings
 from src.core.redis import RedisService
 
+from ..domain.explanation import EXPLANATION_PROMPT_VERSION
+
 
 def _key(question_id: int) -> str:
-    return f"exam:explanation:{question_id}"
+    return f"exam:explanation:v{EXPLANATION_PROMPT_VERSION}:{question_id}"
 
 
 class RedisExplanationCache:
